@@ -1,5 +1,7 @@
 package jp.co.sample.emp_management.form;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * ログイン時に使用するフォーム.
  * 
@@ -9,8 +11,10 @@ package jp.co.sample.emp_management.form;
 public class LoginForm {
 	
 	/** メールアドレス */
+	@NotBlank(message = "メールアドレスを入力してください")
 	private String mailAddress;
 	/** パスワード */
+	@NotBlank(message = "パスワードを入力してください")
 	private String password;
 	
 	/**
