@@ -80,7 +80,11 @@ public class AdministratorController {
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
+		boolean insertResult = administratorService.insert(administrator);
+		if(insertResult==false) {
+			model.addAttribute("existedEmail","すでにメールアドレスが存在しています");
+			return "administrator/insert";
+		}
 		return "redirect:/";
 	}
 
