@@ -69,7 +69,7 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-12">
-										<label for="passwaord">
+										<label for="password">
 											パスワード:
 										</label>
 										<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-messages">
@@ -77,6 +77,22 @@
 										</label>
 										<input type="password" name="password" id="password" class="form-control" placeholder="password"
 											 th:field="*{password}" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
+							<!-- 確認用パスワード -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="repassword">
+											確認用パスワード:
+										</label>
+										<span th:if="${notMatch}" th:text="${notMatch}" style="color:red">Password and Repassword are not match</span>
+										<label th:if="${#fields.hasErrors('repassword')}" th:errors="*{repassword}" class="error-messages">
+											確認用パスワード入力してください
+										</label>
+										<input type="password" name="repassword" id="repassword" class="form-control" placeholder="repassword"
+											 th:field="*{repassword}" value="xxxxxxxx">
 									</div>
 								</div>
 							</div>
