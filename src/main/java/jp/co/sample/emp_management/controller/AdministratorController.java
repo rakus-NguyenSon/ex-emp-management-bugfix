@@ -102,7 +102,7 @@ public class AdministratorController {
 	 * @return ログイン画面
 	 */
 	@RequestMapping("/")
-	public String toLogin() {
+	public String toLogin(Model model) {
 		return "administrator/login";
 	}
 
@@ -115,12 +115,18 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/login")
 	public String login(@Validated LoginForm form, BindingResult result, Model model) {
+		
+		if(result.hasErrors()) {
+			return toLogin(model);
+		}
+
 		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 		if (administrator == null) {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
-			return toLogin();
+			return toLogin(model);
 		}
-		session.setAttribute("admin", administrator);
+
+		session.setAttribute("administrator", administrator);
 		return "forward:/employee/showList";
 	}
 
