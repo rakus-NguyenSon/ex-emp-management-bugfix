@@ -59,6 +59,9 @@ public class EmployeeService {
 	 * @return 条件に当たる従業員一覧
 	 */
 	public List<Employee> showListByName(String name) {
+		if (name == null) {
+			return employeeRepository.findAll();
+		}
 		if (name.isEmpty()) {
 			return employeeRepository.findAll();
 		}
