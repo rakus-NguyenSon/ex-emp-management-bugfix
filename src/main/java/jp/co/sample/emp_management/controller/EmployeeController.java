@@ -92,4 +92,23 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+	
+	/**
+	 * 名前にNameがはいっている従業員一覧.
+	 * 
+	 * @param name　検索される名前
+	 * @return 名前
+	 */
+	@RequestMapping("/searchByName")
+	public String searchByName(String searchName, Model model) {
+		
+		List<Employee> employees = employeeService.showListByName(searchName);
+		
+		if(employees.isEmpty()) {
+			model.addAttribute("SearchError", "１件もありませんでした");
+			employees = employeeService.showList();
+		}
+		model.addAttribute("employeeList", employees);
+		return "employee/list";
+	}
 }

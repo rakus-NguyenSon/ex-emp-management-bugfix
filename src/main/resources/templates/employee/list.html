@@ -51,10 +51,16 @@
 		</nav>
 		
 		<!-- パンくずリスト -->
-		<ol class="breadcrumb">
+		<div class="breadcrumb">
+		<div class="pull-right">
+		<form th:action="@{/employee/searchByName}">
+				<input type="text" name="searchName">
+				<button>検索</button></form>
+		</div>
+		<ol class="breadcrumb" style="height:100%;">
 			<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員リスト</a></li>
 		</ol>
-
+		</div>
 		<!-- table -->
 		<div class="row">
 			<div
@@ -63,7 +69,9 @@
 <!-- ここから上を編集する必要はありません -->
 
 <!-- ここにモックのtable要素を貼り付けます -->
-
+				<div class="alert alert-danger" th:if="${SearchError}">
+			   	 <p th:text="${SearchError}"></p>
+			    </div>
 				<table class="table table-striped">
 					<thead>
 						<tr>
