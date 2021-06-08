@@ -52,16 +52,23 @@
 			<!-- /.container-fluid -->
 		</nav>
 		
-		<!-- パンくずリスト -->
-		<ol class="breadcrumb">
+			<!-- パンくずリスト -->
+		<div class="breadcrumb">
+		<div class="pull-right">
+		<form th:action="@{/employee/showList}" method="post">
+				<input type="text" name="searchName" id="searchName">
+				<button>検索</button></form>
+		</div>
+		<ol class="breadcrumb" style="height:100%;">
 			<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員リスト</a></li>
 		</ol>
-
+		</div>
 		<!-- table -->
 		<div class="row">
 			<div
 				class="table-responsive col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
 
+<!-- ここから上を編集する必要はありません -->
 <!-- ここから上を編集する必要はありません -->
 
 <!-- ここにモックのtable要素を貼り付けます -->
@@ -105,10 +112,22 @@
   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   	
   	<script type="text/javascript" th:inline="javascript">
+  		'use strict'
   		$(function(){
-  			let nameList = /*[[${employee.name}]]*/;
-  			
+  			/*<![CDATA[*/
+  			console.log('Already')
+  			let employeeList = [[${employeeList}]]
+  			var nameList = [] 
+  			for(let name in employeeList){
+  	  				nameList.push(employeeList[name]['name'])
+  	  			}
+  			/*]]>*/
+  			$("#searchName").autocomplete({
+  	  				source: nameList,
+  	  				autoFocus:true,
+  	  			})
   		})
+  	
   	</script>
 </body>
 </html>
