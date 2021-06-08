@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,10 +35,10 @@
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員管理</a></li>
+						<li class="active"><a href="list.html">従業員管理</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-						<span th:text="${session.admin.name}">山田太郎</span>さんこんにちは！
+						<span th:text="${session.administratorName + 'さん'}">山田さん</span>こんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/logout}">ログアウト</a>
 					</p>
@@ -75,12 +73,12 @@
 					<tbody>
 						<tr th:each="employee : ${employeeList}">
 							<td>
-								<a href="detail.html" th:href="@{'/employee/showDetail?id=' + ${employee.id}}">
+								<a href="detail.html" th:href="@{/employee/showDetail(id=${employee.id})}">
 									<span th:text="${employee.name}">山田太郎</span>
 								</a>
 							</td>
 							<td>
-								<span th:text="${#dates.format(employee.hireDate,'yyyy年MM月dd日')}">2016/12/1</span>
+								<span th:text="${employee.hireDate}">2016/12/1</span>
 							</td>
 							<td>
 								<span th:text="${employee.dependentsCount} + '人'">3人</span>
