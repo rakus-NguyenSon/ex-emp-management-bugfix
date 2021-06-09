@@ -23,7 +23,6 @@ import jp.co.sample.emp_management.domain.Administrator;
 public class AdministratorRepository {
 
 	
-	final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 	/**
 	 * Administratorオブジェクトを生成するローマッパー.
 	 */
@@ -54,36 +53,12 @@ public class AdministratorRepository {
 	}
 	
 	/**
-	 * メールアドレスとパスワードから管理者情報を取得します.
-	 * 
-	 * @param mailAddress メールアドレス
-	 * @param password    パスワード
-	 * @return 管理者情報 存在しない場合はnullを返します
-	 */
-	public Administrator findByMailAddressAndPassward(String mailAddress, String password) {
-		
-		
-		String sql = "select id,name,mail_address,password from administrators where mail_address=:mailAddress;";
-		
-		SqlParameterSource param = new MapSqlParameterSource().addValue("password", password).addValue("mailAddress", mailAddress);
-		List<Administrator> administratorList = template.query(sql, param, ADMINISTRATOR_ROW_MAPPER);
-		
-		if (administratorList.size() == 0) {
-			return null;
-		}
-		if (PASSWORD_ENCODER.matches(password, administratorList.get(0).getPassword())) {
-			return administratorList.get(0);			
-		}
-		return null;
-	}
-
-	/**
 	 * 管理者情報を挿入します.
 	 * 
 	 * @param administrator 管理者情報
 	 */
 	public boolean insert(Administrator administrator) {
-		administrator.setPassword(PASSWORD_ENCODER.encode(administrator.getPassword()));
+		
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
 		try {
 		String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";
