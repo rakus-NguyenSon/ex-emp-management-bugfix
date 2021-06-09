@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import jp.co.sample.emp_management.domain.Administrator;
@@ -21,6 +22,8 @@ import jp.co.sample.emp_management.domain.Administrator;
 @Repository
 public class AdministratorRepository {
 
+	
+	final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 	/**
 	 * Administratorオブジェクトを生成するローマッパー.
 	 */
@@ -58,14 +61,20 @@ public class AdministratorRepository {
 	 * @return 管理者情報 存在しない場合はnullを返します
 	 */
 	public Administrator findByMailAddressAndPassward(String mailAddress, String password) {
-		String sql = "select id,name,mail_address,password from administrators where mail_address=:mailAddress "
-				+ "and password=:password;";
+		
+		
+		String sql = "select id,name,mail_address,password from administrators where mail_address=:mailAddress;";
+		
 		SqlParameterSource param = new MapSqlParameterSource().addValue("password", password).addValue("mailAddress", mailAddress);
 		List<Administrator> administratorList = template.query(sql, param, ADMINISTRATOR_ROW_MAPPER);
+		
 		if (administratorList.size() == 0) {
 			return null;
 		}
-		return administratorList.get(0);
+		if (PASSWORD_ENCODER.matches(password, administratorList.get(0).getPassword())) {
+			return administratorList.get(0);			
+		}
+		return null;
 	}
 
 	/**
@@ -74,6 +83,7 @@ public class AdministratorRepository {
 	 * @param administrator 管理者情報
 	 */
 	public boolean insert(Administrator administrator) {
+		administrator.setPassword(PASSWORD_ENCODER.encode(administrator.getPassword()));
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
 		try {
 		String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";

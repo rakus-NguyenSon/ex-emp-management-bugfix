@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -73,8 +74,7 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) { 
 		if (form.getPassword().equals(form.getRepassword()) != true) {
 			FieldError fieldError = new FieldError(result.getObjectName(), "repassword", "パスワードと一致しません");
 			result.addError(fieldError);
